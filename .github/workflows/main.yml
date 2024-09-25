@@ -19,6 +19,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Copy secret
+        env:
+          APPLICATION_FILE: ${{ secrets.APPLICATION_PROFILE }}
+          DIR: ./src/main/resources
+          APPLICATION_FILE_NAME: application.yml
+        run: |
+          touch $DIR/$APPLICATION_FILE_NAME
+          echo "$APPLICATION_FILE" > $DIR/$APPLICATION_FILE_NAME
+
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
