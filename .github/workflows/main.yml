@@ -69,9 +69,16 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           port: 22
           script: |
+            mkdir -p /home/ec2-user/app
             cd /home/ec2-user/app
-            git pull origin main
-
+            
+            # Clone the repository if it's not already present
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/OH-GITAEK/allbareum-backend.git .
+            else
+              git pull origin main
+            fi
+            
             # Stop existing Docker containers if any
             docker-compose down || true
             
