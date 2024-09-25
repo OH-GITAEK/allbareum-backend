@@ -59,7 +59,20 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           port: 22
           script: |
+            cd /home/ec2-user/app
+            git pull origin main
+
+            # Stop existing Docker containers if any
+            docker-compose down || true
+            
+            # Export environment variables
+            export SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}
+            export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+            export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+
+            # Pull the latest Docker image
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
-            docker stop myapp || true
-            docker rm myapp || true
-            docker run -d --name myapp -p 80:80 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
+            
+            # Start the application with Docker Compose
+            docker-compose up -d --build
+
