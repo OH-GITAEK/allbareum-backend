@@ -25,6 +25,7 @@ jobs:
           DIR: ./src/main/resources
           APPLICATION_FILE_NAME: application.yml
         run: |
+          mkdir -p $DIR  # Ensure the directory exists
           touch $DIR/$APPLICATION_FILE_NAME
           echo "$APPLICATION_FILE" > $DIR/$APPLICATION_FILE_NAME
 
