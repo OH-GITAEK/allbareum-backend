@@ -69,8 +69,8 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           port: 22
           script: |
-            mkdir -p /home/ec2-user/app
-            cd /home/ec2-user/app
+            mkdir -p /home/ubuntu/app
+            cd /home/ubuntu/app
             
             # Clone the repository if it's not already present
             if [ ! -d ".git" ]; then
