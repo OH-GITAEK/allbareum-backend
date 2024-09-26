@@ -80,6 +80,9 @@ jobs:
               git pull origin main
             fi
             
+            # Create necessary directories for application.yml
+            mkdir -p src/main/resources
+            
             # Create application.yml file
             echo "${{ secrets.APPLICATION_PROFILE }}" > src/main/resources/application.yml
       
