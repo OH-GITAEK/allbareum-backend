@@ -90,10 +90,8 @@ jobs:
             # Pull the latest Docker image
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
             
-            # Start the application with Docker Compose
+            SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
+            SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
+            SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
             docker-compose up -d --build
-        env:
-          SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
 
