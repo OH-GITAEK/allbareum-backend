@@ -30,15 +30,15 @@ jobs:
           echo "$APPLICATION_FILE" > $DIR/$APPLICATION_FILE_NAME
           
 
-      - name: Create Dockerfile from secret
+      - name: Create docker-compose from secret
         env:
-          DOCKERFILE_CONTENT: ${{ secrets.DOCKERFILE_CONTENT }}
-          DOCKERFILE_DIR: ./  # Dockerfile을 생성할 디렉토리
-          DOCKERFILE_NAME: Dockerfile
+          DOCKER_COMPOSE_CONTENT: ${{ secrets.DOCKER_COMPOSE_CONTENT }}
+          DOCKER_COMPOSE_DIR: ./  # Dockerfile을 생성할 디렉토리
+          DOCKER_COMPOSE_NAME: docker-compose.yml
         run: |
-          mkdir -p $DOCKERFILE_DIR  # Ensure the directory exists
-          touch $DOCKERFILE_DIR/$DOCKERFILE_NAME
-          echo "$DOCKERFILE_CONTENT" > $DOCKERFILE_DIR/$DOCKERFILE_NAME
+          mkdir -p $DOCKER_COMPOSE_DIR  # Ensure the directory exists
+          touch $DOCKER_COMPOSE_DIR/$DOCKER_COMPOSE_NAME
+          echo "$DOCKER_COMPOSE_CONTENT" > $DOCKER_COMPOSE_DIR/$DOCKER_COMPOSE_NAME
 
       - name: Cache Gradle packages
         uses: actions/cache@v3
