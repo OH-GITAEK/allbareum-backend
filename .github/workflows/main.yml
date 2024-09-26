@@ -28,6 +28,17 @@ jobs:
           mkdir -p $DIR  # Ensure the directory exists
           touch $DIR/$APPLICATION_FILE_NAME
           echo "$APPLICATION_FILE" > $DIR/$APPLICATION_FILE_NAME
+          
+
+      - name: Create Dockerfile from secret
+        env:
+          DOCKERFILE_CONTENT: ${{ secrets.DOCKERFILE_CONTENT }}
+          DOCKERFILE_DIR: ./  # Dockerfile을 생성할 디렉토리
+          DOCKERFILE_NAME: Dockerfile
+        run: |
+          mkdir -p $DOCKERFILE_DIR  # Ensure the directory exists
+          touch $DOCKERFILE_DIR/$DOCKERFILE_NAME
+          echo "$DOCKERFILE_CONTENT" > $DOCKERFILE_DIR/$DOCKERFILE_NAME
 
       - name: Cache Gradle packages
         uses: actions/cache@v3
@@ -82,16 +93,13 @@ jobs:
             # Stop existing Docker containers if any
             docker-compose down || true
             
-            # Export environment variables
-            export SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}
-            export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
-            export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+            # Create .env file
+            echo "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" > .env
+            echo "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" >> .env
+            echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" >> .env
 
             # Pull the latest Docker image
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest
             
-            SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
-            SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
-            SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
             docker-compose up -d --build
 
