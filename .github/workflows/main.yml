@@ -80,6 +80,9 @@ jobs:
               git pull origin main
             fi
             
+            # Create application.yml file
+            echo "${{ secrets.APPLICATION_PROFILE }}" > src/main/resources/application.yml
+      
             # Create docker-compose.yml file
             echo "${{ secrets.COMPOSE_FILE_CONTENT }}" > docker-compose.yml
             
