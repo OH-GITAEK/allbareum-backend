@@ -40,9 +40,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build with Gradle
-        run: ./gradlew clean build --no-daemon
-
       - name: Build Docker image
         run: docker build -t myapp:latest .
 
