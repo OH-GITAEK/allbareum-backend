@@ -3,11 +3,17 @@ package net.allbareum.allbareumbackend.domain.user.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jdk.jfr.Enabled;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
 @Enabled
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -20,7 +26,7 @@ public class User {
     private String password;
     private String username;
     @Column(unique = true)
-    private String Nickname;
+    private String nickName;
 
 
     private String role;
