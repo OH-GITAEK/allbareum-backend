@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class UserApplicationService {
     private final UserService userService;
 
-    public UserResponseDto register(UserCreateRequestDto userCreateRequestDto) {
+    public UserResponseDto signUp(UserCreateRequestDto userCreateRequestDto) {
 
         User user = userService.signUp(userCreateRequestDto);
         return new UserResponseDto(user);
