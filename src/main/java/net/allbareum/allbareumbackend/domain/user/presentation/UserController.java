@@ -1,5 +1,6 @@
 package net.allbareum.allbareumbackend.domain.user.presentation;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import net.allbareum.allbareumbackend.domain.user.application.UserApplicationService;
 import net.allbareum.allbareumbackend.domain.user.application.dto.UserCreateRequestDto;
@@ -16,6 +17,7 @@ public class UserController {
     private final UserApplicationService userApplicationService;
 
     @PostMapping("/sign-up")
+    @Operation(summary = "회원가입")
     public UserResponseDto signUp(@RequestBody UserCreateRequestDto userCreateRequestDto) {
         UserResponseDto creaeteUser = userApplicationService.signUp(userCreateRequestDto);
         return creaeteUser;
