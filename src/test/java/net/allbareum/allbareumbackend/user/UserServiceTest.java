@@ -1,6 +1,10 @@
 package net.allbareum.allbareumbackend.user;
 
+import net.allbareum.allbareumbackend.domain.user.application.UserApplicationService;
+import net.allbareum.allbareumbackend.domain.user.application.dto.UserCreateRequestDto;
+import net.allbareum.allbareumbackend.domain.user.application.dto.UserResponseDto;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
+import net.allbareum.allbareumbackend.domain.user.infrastructure.UserRepository;
 import net.allbareum.allbareumbackend.util.ObjectFixtures;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceTest {
 
     @Autowired
-    UserService userService;
+    UserApplicationService userApplicationService;
 
     @MockBean
     UserRepository userRepository;
@@ -38,7 +42,7 @@ public class UserServiceTest {
         UserCreateRequestDto userCreateRequestDto = new UserCreateRequestDto("signUpEmail@gmail.com","qlalfqjsgh1!","tsetUser2","testNickname2","MEMBER");
 
         //When
-        UserResponseDto result = userService.signUp(userCreateRequestDto);
+        UserResponseDto result = userApplicationService.signUp(userCreateRequestDto);
 
         //Then
         User createdUser = userRepository.findById(result.getId()).orElseThrow();
