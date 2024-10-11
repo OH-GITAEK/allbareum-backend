@@ -3,6 +3,7 @@ package net.allbareum.allbareumbackend.domain.user.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.UuidGenerator;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "${custom.table.user:user}")
 public class User {
 
     @Id

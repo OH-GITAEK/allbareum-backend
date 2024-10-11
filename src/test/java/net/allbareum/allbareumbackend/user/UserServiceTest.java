@@ -11,11 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Optional;
-
-import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -24,31 +20,30 @@ public class UserServiceTest {
     @Autowired
     UserApplicationService userApplicationService;
 
-    @MockBean
+    @Autowired
     UserRepository userRepository;
 
     User user;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         user = ObjectFixtures.getUser();
-        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
+        userRepository.save(user);  // 실제로 메모리 DB에 유저를 저장
     }
 
     @DisplayName("회원 가입")
     @Test
-    void signUp(){
-        //Given
-        UserCreateRequestDto userCreateRequestDto = new UserCreateRequestDto("signUpEmail@gmail.com","qlalfqjsgh1!","tsetUser2","testNickname2","MEMBER");
+    void signUp() {
+        // Given
+        UserCreateRequestDto userCreateRequestDto = new UserCreateRequestDto("signUpEmail@gmail.com", "qlalfqjsgh1!", "testUser2", "testNickname2");
 
-        //When
+        // When
         UserResponseDto result = userApplicationService.signUp(userCreateRequestDto);
 
-        //Then
-        User createdUser = userRepository.findById(result.getId()).orElseThrow();
-
-        // UserResponseDto와 User 엔티티의 특정 속성을 비교하여 일치하는지 확인
-        assertEquals(result.getEmail(), createdUser.getEmail());
-        assertEquals(result.getNickname(), createdUser.getNickname());
+        // Then
+        User createdUser = userRepository.findById(result.getId()).orElseThrow();  // 메모리 DB에서 유저 조회
+        assertNotNull(result.getId());
+        assertEquals(result.getEmail(), userCreateRequestDto.getEmail());
+        assertEquals(result.getNickname(), userCreateRequestDto.getNickname());
     }
 }
