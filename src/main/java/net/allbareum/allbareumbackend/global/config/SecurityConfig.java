@@ -1,4 +1,4 @@
-package net.allbareum.allbareumbackend.security.config;
+package net.allbareum.allbareumbackend.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +30,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/api/v1/users/sign-up").permitAll()
+                        .requestMatchers("/login", "/", "/api/v1/users/sign-up", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated());
 
         http
