@@ -41,7 +41,8 @@ public enum ErrorCode {
     JWT_UNMATCHED_CLAIMS(-206, "토큰 인증 정보가 일치하지 않습니다", 401),
 
     // User
-    USER_ALREADY_EXIST(-300, "이미 회원가입된 유저입니다.", 400),
+    USER_ALREADY_EXIST(-300, "이미 회원가입된 유저 이메일 입니다.", 400),
+    NICKNAME_ALREADY_EXIST(-300, "이미 존재하는 닉네임 입니다.", 400),
     USER_NOT_EXIST(-301, "존재하지 않는 유저입니다.", 406),
     USER_WRONG_PASSWORD(-302, "비밀번호가 틀렸습니다.", 401);
 
