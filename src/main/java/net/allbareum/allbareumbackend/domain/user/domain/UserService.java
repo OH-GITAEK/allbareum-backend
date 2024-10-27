@@ -21,7 +21,7 @@ public class UserService {
             throw new CustomException(ErrorCode.USER_ALREADY_EXIST);
         }
         if (userRepository.existsByNickname(userCreateRequestDto.getNickname())) {
-            throw new CustomException(ErrorCode.USER_ALREADY_EXIST);
+            throw new CustomException(ErrorCode.NICKNAME_ALREADY_EXIST);
         }
 
         User user = User.builder()
