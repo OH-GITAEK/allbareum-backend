@@ -26,4 +26,9 @@ public class UserController {
         return creaeteUser;
     }
 
+    @PostMapping(value = "/login")
+    @Operation(summary = "로그인")
+    public UserLogInResponseDto logIn(@RequestBody UserLogInRequestDto userSignInRequestDto) {
+        return this.userApplicationService.logIn(userSignInRequestDto);
+    }
 }

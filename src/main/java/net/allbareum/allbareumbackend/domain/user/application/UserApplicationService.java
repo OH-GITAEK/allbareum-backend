@@ -22,4 +22,10 @@ public class UserApplicationService {
         User user = userService.signUp(userCreateRequestDto);
         return new UserResponseDto(user);
     }
+
+    @Transactional
+    public UserLogInResponseDto logIn(UserLogInRequestDto userLogInRequestDto) {
+
+        return userService.logIn(userLogInRequestDto);
+    }
 }
