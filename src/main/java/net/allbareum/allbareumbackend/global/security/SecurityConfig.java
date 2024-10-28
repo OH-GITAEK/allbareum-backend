@@ -1,7 +1,9 @@
-package net.allbareum.allbareumbackend.global.config;
+package net.allbareum.allbareumbackend.global.security;
 
 
 import net.allbareum.allbareumbackend.global.jwt.*;
+import net.allbareum.allbareumbackend.global.security.jwt.JWTUtil;
+import net.allbareum.allbareumbackend.global.security.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;

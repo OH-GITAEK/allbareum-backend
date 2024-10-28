@@ -1,4 +1,4 @@
-package net.allbareum.allbareumbackend.global.jwt;
+package net.allbareum.allbareumbackend.global.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
