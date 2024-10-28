@@ -15,10 +15,10 @@ import org.springframework.context.annotation.Configuration;
                         name = "오기택",
                         email = "dhrlxor1512@gmail.com"
                 )
-        )//,
-//        servers = {
-//                @Server(url = "https://backend.allbareum.p-e.kr", description = "Production Server")
-//        }
+        ),
+        servers = {
+                @Server(url = "https://backend.allbareum.p-e.kr", description = "Production Server")
+        }
 )
 @Configuration
 public class OpenApiConfig {
