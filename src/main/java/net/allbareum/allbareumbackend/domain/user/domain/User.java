@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.allbareum.allbareumbackend.global.entity.BaseEntity;
 import org.hibernate.annotations.UuidGenerator;
 
 @Entity
@@ -16,7 +17,7 @@ import org.hibernate.annotations.UuidGenerator;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "${custom.table.user:user}")
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @UuidGenerator

@@ -84,4 +84,44 @@ public class UserServiceTest {
         assertEquals(ErrorCode.NICKNAME_ALREADY_EXIST, exception.getErrorCode());
     }
 
+    @Test
+    void loginSuccess() {
+        // Given
+        LoginRequestDto request = new LoginRequestDto(user.getEmail(), user.getPassword());
+
+        // When
+        UserResponseDto response = userApplicationService.login(request);
+
+        // Then
+        assertNotNull(response.getAccessToken());  // 로그인 성공 시 토큰이 발급됨
+        assertEquals(user.getEmail(), response.getEmail());
+    }
+
+    @DisplayName("잘못된 비밀번호 입력 시 실패")
+    @Test
+    void loginWithWrongPassword() {
+        // Given
+        LoginRequestDto request = new LoginRequestDto(user.getEmail(), "wrongPassword");
+
+        // When & Then
+        CustomException exception = assertThrows(CustomException.class,
+                () -> userApplicationService.login(request)
+        );
+
+        assertEquals(ErrorCode.INVALID_CREDENTIALS, exception.getErrorCode());
+    }
+
+    @DisplayName("존재하지 않는 이메일로 로그인 시도 시 실패")
+    @Test
+    void loginWithNonExistentEmail() {
+        // Given
+        LoginRequestDto request = new LoginRequestDto("nonexistent@gmail.com", "qlalfqjsgh1!");
+
+        // When & Then
+        CustomException exception = assertThrows(CustomException.class,
+                () -> userApplicationService.login(request)
+        );
+
+        assertEquals(ErrorCode.USER_NOT_FOUND, exception.getErrorCode());
+    }
 }
