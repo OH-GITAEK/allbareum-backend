@@ -1,6 +1,7 @@
 package net.allbareum.allbareumbackend.global.security;
 
 
+import net.allbareum.allbareumbackend.global.security.jwt.JWTFilter;
 import net.allbareum.allbareumbackend.global.security.jwt.JWTUtil;
 import net.allbareum.allbareumbackend.global.security.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
@@ -55,6 +56,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/api/v1/users/sign-up", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated());
+
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);

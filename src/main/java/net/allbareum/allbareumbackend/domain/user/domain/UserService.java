@@ -3,11 +3,14 @@ package net.allbareum.allbareumbackend.domain.user.domain;
 
 import lombok.RequiredArgsConstructor;
 import net.allbareum.allbareumbackend.domain.user.application.dto.UserCreateRequestDto;
+import net.allbareum.allbareumbackend.domain.user.application.dto.UserLogInRequestDto;
+import net.allbareum.allbareumbackend.domain.user.application.dto.UserLogInResponseDto;
 import net.allbareum.allbareumbackend.domain.user.infrastructure.UserRepository;
 import net.allbareum.allbareumbackend.global.exception.CustomException;
 import net.allbareum.allbareumbackend.global.exception.ErrorCode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

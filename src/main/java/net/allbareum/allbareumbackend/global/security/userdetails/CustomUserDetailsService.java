@@ -2,6 +2,7 @@ package net.allbareum.allbareumbackend.global.security.userdetails;
 
 import net.allbareum.allbareumbackend.domain.user.domain.User;
 import net.allbareum.allbareumbackend.domain.user.infrastructure.UserRepository;
+import net.allbareum.allbareumbackend.global.exception.ErrorCode;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,6 +33,14 @@ public class CustomUserDetailsService implements UserDetailsService {
             return new CustomUserDetails(userData);
         }
 
+
         return null;
+    }
+
+    public UserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
+        User userData = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return new CustomUserDetails(userData);
     }
 }

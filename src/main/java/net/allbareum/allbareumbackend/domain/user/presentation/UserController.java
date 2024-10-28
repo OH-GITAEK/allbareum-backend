@@ -5,6 +5,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.allbareum.allbareumbackend.domain.user.application.UserApplicationService;
 import net.allbareum.allbareumbackend.domain.user.application.dto.UserCreateRequestDto;
+import net.allbareum.allbareumbackend.domain.user.application.dto.UserLogInRequestDto;
+import net.allbareum.allbareumbackend.domain.user.application.dto.UserLogInResponseDto;
 import net.allbareum.allbareumbackend.domain.user.application.dto.UserResponseDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
