@@ -40,10 +40,17 @@ public class UserService {
     }
 
     public UserLogInResponseDto logIn(UserLogInRequestDto userLogInRequestDto) {
+        //이메일 검증
         User user = userRepository.findByEmail(userLogInRequestDto.getEmail()).orElseThrow(
                 () -> new CustomException(
                         ErrorCode.USER_NOT_EXIST)
         );
+
+        //비밀번호 검증
+        if (!bCryptPasswordEncoder.matches(userLogInRequestDto.getPassword(), user.getPassword())) {
+            throw new CustomException(ErrorCode.USER_WRONG_PASSWORD);
+        }
+
         String accessToken = jwtUtil.createJwt(user.getId(), user.getRole(), 60*60*10L);
         System.out.println("Generated JWT: " + accessToken);
         return new UserLogInResponseDto(accessToken);

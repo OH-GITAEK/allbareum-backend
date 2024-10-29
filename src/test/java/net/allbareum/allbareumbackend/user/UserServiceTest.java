@@ -2,6 +2,8 @@ package net.allbareum.allbareumbackend.user;
 
 import net.allbareum.allbareumbackend.domain.user.application.UserApplicationService;
 import net.allbareum.allbareumbackend.domain.user.application.dto.UserCreateRequestDto;
+import net.allbareum.allbareumbackend.domain.user.application.dto.UserLogInRequestDto;
+import net.allbareum.allbareumbackend.domain.user.application.dto.UserLogInResponseDto;
 import net.allbareum.allbareumbackend.domain.user.application.dto.UserResponseDto;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
 import net.allbareum.allbareumbackend.domain.user.infrastructure.UserRepository;
@@ -87,41 +89,40 @@ public class UserServiceTest {
     @Test
     void loginSuccess() {
         // Given
-        LoginRequestDto request = new LoginRequestDto(user.getEmail(), user.getPassword());
+        UserLogInRequestDto request = new UserLogInRequestDto(user.getEmail(), "qlalfqjsgh1!");
 
         // When
-        UserResponseDto response = userApplicationService.login(request);
+        UserLogInResponseDto response = userApplicationService.logIn(request);
 
         // Then
         assertNotNull(response.getAccessToken());  // 로그인 성공 시 토큰이 발급됨
-        assertEquals(user.getEmail(), response.getEmail());
     }
 
     @DisplayName("잘못된 비밀번호 입력 시 실패")
     @Test
     void loginWithWrongPassword() {
         // Given
-        LoginRequestDto request = new LoginRequestDto(user.getEmail(), "wrongPassword");
+        UserLogInRequestDto request = new UserLogInRequestDto(user.getEmail(), "wrongPassword");
 
         // When & Then
         CustomException exception = assertThrows(CustomException.class,
-                () -> userApplicationService.login(request)
+                () -> userApplicationService.logIn(request)
         );
 
-        assertEquals(ErrorCode.INVALID_CREDENTIALS, exception.getErrorCode());
+        assertEquals(ErrorCode.USER_WRONG_PASSWORD, exception.getErrorCode());
     }
 
     @DisplayName("존재하지 않는 이메일로 로그인 시도 시 실패")
     @Test
     void loginWithNonExistentEmail() {
         // Given
-        LoginRequestDto request = new LoginRequestDto("nonexistent@gmail.com", "qlalfqjsgh1!");
+        UserLogInRequestDto request = new UserLogInRequestDto("nonexistent@gmail.com", "qlalfqjsgh1!");
 
         // When & Then
         CustomException exception = assertThrows(CustomException.class,
-                () -> userApplicationService.login(request)
+                () -> userApplicationService.logIn(request)
         );
 
-        assertEquals(ErrorCode.USER_NOT_FOUND, exception.getErrorCode());
+        assertEquals(ErrorCode.USER_NOT_EXIST, exception.getErrorCode());
     }
 }
