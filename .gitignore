@@ -39,3 +39,4 @@ out/
 *.yaml
 .env
 *.pem
+**/config/OpenApiConfig
