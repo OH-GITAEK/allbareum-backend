@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.allbareum.allbareumbackend.global.dto.response.ErrorResponse;
 import net.allbareum.allbareumbackend.global.dto.response.result.ExceptionResult;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -71,7 +72,9 @@ public class ExceptionAdvice {
      * 커스텀 예외
      */
     @ExceptionHandler(CustomException.class)
-    public ErrorResponse<?> handleCustomException(CustomException e) {
-        return ErrorResponse.of(e.getErrorCode().getErrorCode(), e.getErrorCode().getMessage());
+    public ResponseEntity<ErrorResponse<?>> handleCustomException(CustomException e) {
+        HttpStatus status = HttpStatus.valueOf(e.getErrorCode().getHttpCode()); // ErrorCode에서 HTTP 상태 코드 가져오기
+        ErrorResponse<?> response = ErrorResponse.of(e.getErrorCode().getErrorCode(), e.getErrorCode().getMessage());
+        return new ResponseEntity<>(response, status);
     }
 }
