@@ -1,12 +1,19 @@
 package net.allbareum.allbareumbackend.domain.feedback.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
-
 @Entity
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Feedback {
 
     @Id

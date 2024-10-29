@@ -1,10 +1,14 @@
 package net.allbareum.allbareumbackend.domain.feedback.application.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class FeedbackResponse {
     private String id;
     private String textSentence;

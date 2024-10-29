@@ -21,7 +21,7 @@ public class FeedbackController {
 
     @PostMapping("/create")
     @Operation(summary = "피드백 생성")
-    public FeedbackResponse signUp(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody @Valid FeedbackCreateRequestDto feedbackCreateRequestDto) {
+    public FeedbackResponse create(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody @Valid FeedbackCreateRequestDto feedbackCreateRequestDto) {
         FeedbackResponse feedbackResponse = feedbackApplicationService.create(userDetails,feedbackCreateRequestDto);
         return feedbackResponse;
     }
