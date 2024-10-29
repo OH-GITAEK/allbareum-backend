@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackCreateRequestDto;
-import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackResponse;
+import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackResponseDto;
 import net.allbareum.allbareumbackend.global.security.userdetails.CustomUserDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +21,7 @@ public class FeedbackController {
 
     @PostMapping("/create")
     @Operation(summary = "피드백 생성")
-    public FeedbackResponse create(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody @Valid FeedbackCreateRequestDto feedbackCreateRequestDto) {
-        FeedbackResponse feedbackResponse = feedbackApplicationService.create(userDetails,feedbackCreateRequestDto);
-        return feedbackResponse;
+    public FeedbackResponseDto create(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody @Valid FeedbackCreateRequestDto feedbackCreateRequestDto) {
+        return this.feedbackApplicationService.create(userDetails,feedbackCreateRequestDto);
     }
 }

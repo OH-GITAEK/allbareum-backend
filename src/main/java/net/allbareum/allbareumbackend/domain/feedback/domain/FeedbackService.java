@@ -2,7 +2,7 @@ package net.allbareum.allbareumbackend.domain.feedback.domain;
 
 import lombok.RequiredArgsConstructor;
 import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackCreateRequestDto;
-import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackResponse;
+import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackResponseDto;
 import net.allbareum.allbareumbackend.domain.feedback.infrastructure.FeedbackRepository;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ public class FeedbackService {
     @Value("${ml.server.url}")
     private String mlServerUrl;
 
-    public FeedbackResponse create(User user, FeedbackCreateRequestDto feedbackCreateRequestDto) throws IOException {
+    public FeedbackResponseDto create(User user, FeedbackCreateRequestDto feedbackCreateRequestDto) throws IOException {
         // 1. 음성 파일 바이트 배열로 변환
         byte[] audioBytes = feedbackCreateRequestDto.getAudioFile().getBytes();
 
@@ -75,7 +74,7 @@ public class FeedbackService {
                 .user(user)
                 .build();
         // DTO로 반환
-        return new FeedbackResponse(
+        return new FeedbackResponseDto(
                 feedback,
                 oralStructureImageBase64,
                 frequencyAnalysisImageBase64
