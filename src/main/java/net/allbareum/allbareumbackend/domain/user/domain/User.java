@@ -1,15 +1,15 @@
 package net.allbareum.allbareumbackend.domain.user.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.allbareum.allbareumbackend.domain.feedback.domain.Feedback;
 import net.allbareum.allbareumbackend.global.entity.BaseEntity;
 import org.hibernate.annotations.UuidGenerator;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,4 +33,7 @@ public class User extends BaseEntity {
 
 
     private String role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Feedback> feedbacks;
 }
