@@ -67,6 +67,11 @@ jobs:
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           port: 22
           script: |
+            cd ~/Speech-Correction-ML-Server
+
+            # Pull the latest code from the main branch
+            git pull origin main
+            
             # Create docker-compose.yml file
             echo "${{ secrets.COMPOSE_FILE_CONTENT }}" > docker-compose.yml
             
