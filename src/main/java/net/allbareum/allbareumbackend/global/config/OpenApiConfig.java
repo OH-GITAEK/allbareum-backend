@@ -20,10 +20,10 @@ import org.springframework.context.annotation.Configuration;
                 )
         ),
         security = {@SecurityRequirement(name = "bearerAuth")}
-//        ,
-//        servers = {
-//                @Server(url = "https://backend.allbareum.p-e.kr", description = "Production Server")
-//        }
+        ,
+        servers = {
+                @Server(url = "https://backend.allbareum.p-e.kr", description = "Production Server")
+        }
 )
 
 @SecurityScheme(
