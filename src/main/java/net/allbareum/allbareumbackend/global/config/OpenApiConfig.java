@@ -1,8 +1,11 @@
 package net.allbareum.allbareumbackend.global.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,9 +19,18 @@ import org.springframework.context.annotation.Configuration;
                         email = "dhrlxor1512@gmail.com"
                 )
         ),
-        servers = {
-                @Server(url = "https://backend.allbareum.p-e.kr", description = "Production Server")
-        }
+        security = {@SecurityRequirement(name = "bearerAuth")}
+//        ,
+//        servers = {
+//                @Server(url = "https://backend.allbareum.p-e.kr", description = "Production Server")
+//        }
+)
+
+@SecurityScheme(
+        name = "bearerAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT"
 )
 @Configuration
 public class OpenApiConfig {
