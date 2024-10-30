@@ -1,7 +1,7 @@
 package net.allbareum.allbareumbackend.domain.feedback.infrastructure;
 
-import net.allbareum.allbareumbackend.domain.user.domain.User;
+import net.allbareum.allbareumbackend.domain.feedback.domain.Feedback;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FeedbackRepository extends JpaRepository<User,String> {
+public interface FeedbackRepository extends JpaRepository<Feedback,String> {
 }

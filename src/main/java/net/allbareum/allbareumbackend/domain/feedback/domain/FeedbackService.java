@@ -30,41 +30,62 @@ public class FeedbackService {
     private String mlServerUrl;
 
     public FeedbackResponseDto create(User user, FeedbackCreateRequestDto feedbackCreateRequestDto) throws IOException {
+        System.out.println("FeedbackService 도착");
         // 1. 음성 파일 바이트 배열로 변환
         byte[] audioBytes = feedbackCreateRequestDto.getAudioFile().getBytes();
+        System.out.println("FeedbackService 1");
 
         // 2. HTTP 요청 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "form-data; name=\"audio\"; filename=\"audio.wav\"");
 
         // 3. HTTP 요청 바디 구성
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("audio", new ByteArrayResource(audioBytes) {
             @Override
             public String getFilename() {
-                return "audio.3gp"; // 임시 파일 이름 설정
+                return "audio.wav"; // 임시 파일 이름 설정
             }
         });
+        System.out.println("FeedbackService 3");
+
         body.add("text", feedbackCreateRequestDto.getTextSentence());
+        System.out.println("FeedbackService 4");
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        System.out.println(requestEntity);
 
         // 4. ML 서버로 요청 전송
         ResponseEntity<Map> response = restTemplate.postForEntity(
                 mlServerUrl + "/get-feedback", requestEntity, Map.class);
+        System.out.println("Status Code: " + response.getStatusCode());
+        System.out.println("Response Body: " + response.getBody());
+
+        System.out.println("FeedbackService 6");
 
         // 5. 응답 처리
         Map<String, Object> responseBody = response.getBody();
+        // 'feedback_data' 내부의 값 추출
+        Map<String, Object> feedbackData = (Map<String, Object>) responseBody.get("feedback_data");
+        System.out.println("FeedbackService 7");
 
-        List<Integer> incorrectWordIndices = (List<Integer>) responseBody.get("incorrect_word_indices");
-        Double accuracyScore = Double.valueOf(responseBody.get("accuracy").toString());
-        String speechFeedback = (String) responseBody.get("speech_feedback");
-        String frequencyFeedback = (String) responseBody.get("frequency_feedback");
+        List<Integer> incorrectWordIndices = (List<Integer>) feedbackData.get("incorrect_word_indices");
+        Double accuracyScore = Double.valueOf(feedbackData.get("accuracy").toString());
+        String speechFeedback = (String) feedbackData.get("speech_feedback");
+        String frequencyFeedback = (String) feedbackData.get("frequency_feedback");
 
-        // 이미지 데이터(Base64 인코딩) 처리
-        String oralStructureImageBase64 = (String) responseBody.get("oral_structure_image");
-        String frequencyAnalysisImageBase64 = (String) responseBody.get("frequency_analysis_image");
+        System.out.println("FeedbackService 8");
 
+        // 이미지 정보 추출
+        Map<String, Object> oralImageData = (Map<String, Object>) responseBody.get("oral_structure_image");
+        Map<String, Object> frequencyImageData = (Map<String, Object>) responseBody.get("frequency_analysis_image");
+
+        String oralStructureImagePath = (String) oralImageData.get("path");
+        String frequencyAnalysisImagePath = (String) frequencyImageData.get("path");
+
+
+        System.out.println("FeedbackService 9");
         Feedback feedback = Feedback.builder()
                 .textSentence(feedbackCreateRequestDto.getTextSentence())
                 .incorrectWordIndices(incorrectWordIndices)
@@ -73,11 +94,14 @@ public class FeedbackService {
                 .frequencyFeedback(frequencyFeedback)
                 .user(user)
                 .build();
+
+        feedbackRepository.save(feedback);
         // DTO로 반환
+        System.out.println("FeedbackService 끝");
         return new FeedbackResponseDto(
                 feedback,
-                oralStructureImageBase64,
-                frequencyAnalysisImageBase64
+                oralStructureImagePath,
+                frequencyAnalysisImagePath
         );
     }
 }
