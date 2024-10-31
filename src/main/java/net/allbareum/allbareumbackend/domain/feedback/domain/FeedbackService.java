@@ -68,41 +68,38 @@ public class FeedbackService {
         // 5. 응답 처리
         Map<String, Object> responseBody = response.getBody();
         // 'feedback_data' 내부의 값 추출
-        Map<String, Object> feedbackData = (Map<String, Object>) responseBody.get("feedback_data");
+   
+        Map<String, Object> pronunciation_feedback_data = (Map<String, Object>) responseBody.get("pronunciation_feedback");
+        Map<String, Object> intonation_feedback_data = (Map<String, Object>) responseBody.get("intonation_feedback");
         System.out.println("FeedbackService 7");
 
-        List<Integer> incorrectWordIndices = (List<Integer>) feedbackData.get("incorrect_word_indices");
-        Double accuracyScore = Double.valueOf(feedbackData.get("accuracy").toString());
-        String speechFeedback = (String) feedbackData.get("speech_feedback");
-        String frequencyFeedback = (String) feedbackData.get("frequency_feedback");
+        String transcription = (String)  pronunciation_feedback_data.get("transcription");
+        String pronunciation_feedback = (String)  pronunciation_feedback_data.get("pronunciation_feedback");
+        Double pronunciation_score = Double.valueOf(pronunciation_feedback_data.get("pronunciation_score").toString());
+        String pronunciation_feedback_image = (String) pronunciation_feedback_data.get("pronunciation_feedback_image");
 
         System.out.println("FeedbackService 8");
 
-        // 이미지 정보 추출
-        Map<String, Object> oralImageData = (Map<String, Object>) responseBody.get("oral_structure_image");
-        Map<String, Object> frequencyImageData = (Map<String, Object>) responseBody.get("frequency_analysis_image");
+        String intonation_feedback = (String)  intonation_feedback_data.get("intonation_feedback");
+        Double intonation_score = Double.valueOf(intonation_feedback_data.get("intonation_score").toString());
+        String intonation_feedback_image = (String) intonation_feedback_data.get("intonation_feedback_image");
 
-        String oralStructureImagePath = (String) oralImageData.get("path");
-        String frequencyAnalysisImagePath = (String) frequencyImageData.get("path");
 
 
         System.out.println("FeedbackService 9");
         Feedback feedback = Feedback.builder()
                 .textSentence(feedbackCreateRequestDto.getTextSentence())
-                .incorrectWordIndices(incorrectWordIndices)
-                .accuracyScore(accuracyScore)
-                .speechFeedback(speechFeedback)
-                .frequencyFeedback(frequencyFeedback)
+                .transcription(transcription)
+                .pronunciation_feedback(pronunciation_feedback)
+                .pronunciation_score(pronunciation_score)
+                .intonation_feedback(intonation_feedback)
+                .intonation_score(intonation_score)
                 .user(user)
                 .build();
 
         feedbackRepository.save(feedback);
         // DTO로 반환
         System.out.println("FeedbackService 끝");
-        return new FeedbackResponseDto(
-                feedback,
-                oralStructureImagePath,
-                frequencyAnalysisImagePath
-        );
+        return new FeedbackResponseDto(feedback, pronunciation_feedback_image, intonation_feedback_image);
     }
 }
