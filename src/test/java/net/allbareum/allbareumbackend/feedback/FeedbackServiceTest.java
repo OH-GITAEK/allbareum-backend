@@ -60,11 +60,12 @@ public class FeedbackServiceTest {
         // Then: 응답 값 검증
         assertNotNull(feedbackResponseDto);
         assertEquals("Hello, how are you?", feedbackResponseDto.getTextSentence());
-        assertNotNull(feedbackResponseDto.getIncorrectWordIndices());
-        assertNotNull(feedbackResponseDto.getAccuracyScore());
-        assertNotNull(feedbackResponseDto.getSpeechFeedback());
-        assertNotNull(feedbackResponseDto.getOralStructureImage());
-        assertNotNull(feedbackResponseDto.getFrequencyAnalysisImage());
-        assertNotNull(feedbackResponseDto.getFrequencyFeedback());
+        assertNotNull(feedbackResponseDto.getPronunciation_feedback());
+        assertNotNull(feedbackResponseDto.getPronunciation_feedback_image());
+        assertNotNull(feedbackResponseDto.getTranscription());
+        assertNotNull(feedbackResponseDto.getTextSentence());
+        assertNotNull(feedbackResponseDto.getIntonation_feedback());
+        assertNotNull(feedbackResponseDto.getIntonation_feedback_image());
+        assertNotNull(feedbackResponseDto.getIntonation_score());
     }
 }
