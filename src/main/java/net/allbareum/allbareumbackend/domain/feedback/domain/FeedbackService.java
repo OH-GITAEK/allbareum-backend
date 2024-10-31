@@ -33,19 +33,20 @@ public class FeedbackService {
         System.out.println("FeedbackService 도착");
         // 1. 음성 파일 바이트 배열로 변환
         byte[] audioBytes = feedbackCreateRequestDto.getAudioFile().getBytes();
+        String originalFileName = feedbackCreateRequestDto.getAudioFile().getOriginalFilename();
         System.out.println("FeedbackService 1");
 
         // 2. HTTP 요청 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "form-data; name=\"audio\"; filename=\"audio.wav\"");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "form-data; name=\"audio\"; filename=\"" + originalFileName + "\"");
 
         // 3. HTTP 요청 바디 구성
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("audio", new ByteArrayResource(audioBytes) {
             @Override
             public String getFilename() {
-                return "audio.wav"; // 임시 파일 이름 설정
+                return originalFileName; // 임시 파일 이름 설정
             }
         });
         System.out.println("FeedbackService 3");
