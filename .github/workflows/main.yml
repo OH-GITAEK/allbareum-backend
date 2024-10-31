@@ -85,8 +85,12 @@ jobs:
             echo "${{ secrets.COMPOSE_FILE_CONTENT }}" | tr -d '\r' > docker-compose.yml
 
             # 기존 컨테이너를 중지하고 삭제
-            sudo docker-compose down --remove-orphans || true
+            sudo docker-compose down --remove-orphans --timeout 10 || true
+  
+            # 이름 충돌이 나는 컨테이너가 있는지 확인 후 삭제
+            sudo docker rm -f backend || true
+            sudo docker rm -f fastapi-cpu || true
 
             # 최신 이미지 다운로드 및 새로운 컨테이너 실행
-            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest || true
+            sudo docker pull
             sudo docker-compose up -d --remove-orphans
