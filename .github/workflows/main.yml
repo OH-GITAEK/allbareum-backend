@@ -84,6 +84,9 @@ jobs:
 
             echo "${{ secrets.COMPOSE_FILE_CONTENT }}" | tr -d '\r' > docker-compose.yml
 
-            sudo docker-compose down || true
+             # 기존 컨테이너를 중지하고 삭제
+            sudo docker-compose down --remove-orphans || true
+
+      # 최신 이미지 다운로드 및 새로운 컨테이너 실행
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest || true
-            sudo docker-compose up -d
+            sudo docker-compose up -d --remove-orphans
