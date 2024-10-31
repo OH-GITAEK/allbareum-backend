@@ -28,6 +28,15 @@ jobs:
           mkdir -p $DIR
           echo "$APPLICATION_FILE" > $DIR/$APPLICATION_FILE_NAME
 
+      - name: Copy secret test code
+        env:
+          APPLICATION_FILE: ${{ secrets.APPLICATION_PROFILE_TEST }}
+          DIR: ./src/test/resources
+          APPLICATION_FILE_NAME: application.yml
+        run: |
+          mkdir -p $DIR
+          echo "$APPLICATION_FILE" > $DIR/$APPLICATION_FILE_NAME
+
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
