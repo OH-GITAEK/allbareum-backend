@@ -82,9 +82,7 @@ jobs:
             git reset --hard HEAD
             git pull origin main
 
-            if [ ! -f docker-compose.yml ]; then
-              echo "${{ secrets.COMPOSE_FILE_CONTENT }}" | tr -d '\r' > docker-compose.yml
-            fi
+            echo "${{ secrets.COMPOSE_FILE_CONTENT }}" | tr -d '\r' > docker-compose.yml
 
             sudo docker-compose down || true
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:latest || true
