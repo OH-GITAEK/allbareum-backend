@@ -51,7 +51,7 @@ public class UserService {
             throw new CustomException(ErrorCode.USER_WRONG_PASSWORD);
         }
 
-        String accessToken = jwtUtil.createJwt(user.getId(), user.getRole(), 60*60*1000L);
+        String accessToken = jwtUtil.createJwt(user.getId(), user.getRole(), 60L * 24 * 60 * 60 * 1000);
         System.out.println("Generated JWT: " + accessToken);
         return new UserLogInResponseDto(accessToken);
     }
