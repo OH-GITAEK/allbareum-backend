@@ -26,11 +26,10 @@ public class Feedback {
     private String transcription;
     private String pronunciation_feedback;
     private Double pronunciation_score;
-//    private String pronunciation_feedback_image;
+    private String pronunciation_feedback_image;
 
     private String intonation_feedback;
-    private Double intonation_score;
-//    private String intonation_feedback_image;
+    private String intonation_feedback_image;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
