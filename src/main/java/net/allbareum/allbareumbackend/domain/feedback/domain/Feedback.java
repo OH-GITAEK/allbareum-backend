@@ -24,10 +24,12 @@ public class Feedback {
     private String textSentence; // 프론트에서 전달받은 텍스트 문장
 
     private String transcription;
+    @Column(columnDefinition = "TEXT")
     private String pronunciation_feedback;
     private Double pronunciation_score;
     private String pronunciation_feedback_image;
 
+    @Column(columnDefinition = "TEXT")
     private String intonation_feedback;
     private String intonation_feedback_image;
 
