@@ -39,17 +39,17 @@ public class FeedbackServiceTest {
     @Test
     public void testCreateFeedback() throws IOException {
         // Given: 오디오 파일을 리소스에서 읽어와 MockMultipartFile로 생성
-        ClassPathResource audioResource = new ClassPathResource("dataset_Test_audio_0.wav");
+        ClassPathResource audioResource = new ClassPathResource("0_3gp.3gp");
         InputStream inputStream = audioResource.getInputStream();
 
         MultipartFile audioFile = new MockMultipartFile(
                 "audioFile",
-                "dataset_Test_audio_0.wav",
-                "audio/wav",
+                "0_3gp.3gp",
+                "audio/3gp",
                 inputStream
         );
 
-        String textSentence = "Hello, how are you?";
+        String textSentence = "나는 행복하게 끝나는 영화가 좋다";
         FeedbackCreateRequestDto feedbackCreateRequestDto =
                 new FeedbackCreateRequestDto(textSentence, audioFile);
 
@@ -59,13 +59,12 @@ public class FeedbackServiceTest {
 
         // Then: 응답 값 검증
         assertNotNull(feedbackResponseDto);
-        assertEquals("Hello, how are you?", feedbackResponseDto.getTextSentence());
+        assertEquals("나는 행복하게 끝나는 영화가 좋다", feedbackResponseDto.getTextSentence());
         assertNotNull(feedbackResponseDto.getPronunciation_feedback());
         assertNotNull(feedbackResponseDto.getPronunciation_feedback_image());
         assertNotNull(feedbackResponseDto.getTranscription());
         assertNotNull(feedbackResponseDto.getTextSentence());
         assertNotNull(feedbackResponseDto.getIntonation_feedback());
         assertNotNull(feedbackResponseDto.getIntonation_feedback_image());
-        assertNotNull(feedbackResponseDto.getIntonation_score());
     }
 }

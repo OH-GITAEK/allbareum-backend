@@ -28,16 +28,15 @@ public class FeedbackResponseDto {
 
 
     @Builder
-    public FeedbackResponseDto(Feedback feedback,String pronunciation_feedback_image,String intonation_feedback_image) {
+    public FeedbackResponseDto(Feedback feedback) {
         this.id = feedback.getId();
         this.userId = feedback.getUser().getId();
         this.textSentence = feedback.getTextSentence();
         this.transcription = feedback.getTranscription();
         this.pronunciation_feedback = feedback.getPronunciation_feedback();
         this.pronunciation_score = feedback.getPronunciation_score();
-        this.pronunciation_feedback_image =pronunciation_feedback_image;
+        this.pronunciation_feedback_image =feedback.getPronunciation_feedback_image();
         this.intonation_feedback = feedback.getIntonation_feedback();
-        this.intonation_score = feedback.getIntonation_score();
-        this.intonation_feedback_image = intonation_feedback_image;
+        this.intonation_feedback_image = feedback.getIntonation_feedback_image();
     }
 }
