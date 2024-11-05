@@ -19,7 +19,7 @@ public class MultipartResponseParser {
 
     private void parseResponse(byte[] responseBody, String boundary) throws IOException {
         String boundaryLine = "--" + boundary;
-        String[] parts = new String(responseBody, StandardCharsets.UTF_8).split(boundaryLine);
+        String[] parts = new String(responseBody, "ISO_8859_1").split(boundaryLine);
 
         for (String part : parts) {
             if (part.contains("Content-Disposition: form-data; name=")) {
@@ -30,6 +30,7 @@ public class MultipartResponseParser {
                     byte[] fileData = extractFileData(responseBody, part, boundaryLine);
                     fileParts.put(name, new MockMultipartFile(name, filename, "image/png", fileData));
                 } else {
+                    // 텍스트 데이터를 UTF-8로 추출하도록 수정
                     String textContent = extractTextContent(part);
                     textParts.put(name, textContent);
                 }
@@ -50,14 +51,10 @@ public class MultipartResponseParser {
     }
 
     private byte[] extractFileData(byte[] responseBody, String part, String boundaryLine) throws IOException {
-        // Find start and end of the file data in responseBody based on part's location
-        int partStartIndex = new String(responseBody, StandardCharsets.UTF_8).indexOf(part);
-        int startIndex = part.indexOf("\r\n\r\n") + 4; // Image data starts after this
+        int startIndex = part.indexOf("\r\n\r\n") + 4; // 이미지 데이터의 시작 지점
+        int partStartIndex = new String(responseBody, "ISO_8859_1").indexOf(part);
         int fileDataStart = partStartIndex + startIndex;
-
-        // Locate the boundary after the file data to find the file's end
-        int nextBoundaryIndex = new String(responseBody, StandardCharsets.UTF_8).indexOf(boundaryLine, fileDataStart);
-        int fileDataEnd = nextBoundaryIndex - 2; // Subtract 2 to remove the preceding \r\n
+        int fileDataEnd = fileDataStart + (part.length() - startIndex) - boundaryLine.length() - 6;
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         outputStream.write(responseBody, fileDataStart, fileDataEnd - fileDataStart);
@@ -67,7 +64,8 @@ public class MultipartResponseParser {
     private String extractTextContent(String part) {
         int startIndex = part.indexOf("\r\n\r\n") + 4;
         int endIndex = part.lastIndexOf("\r\n");
-        return part.substring(startIndex, endIndex).trim();
+        // 텍스트를 UTF-8로 인코딩하여 반환
+        return new String(part.substring(startIndex, endIndex).trim().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
     }
 
     public String getTextPart(String name) {
