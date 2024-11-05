@@ -24,7 +24,6 @@ public class FeedbackController {
     @Operation(summary = "피드백 생성")
     public FeedbackResponseDto create(@AuthenticationPrincipal CustomUserDetails userDetails,  @RequestPart("textSentence") String textSentence,
                                       @RequestPart("audioFile") MultipartFile audioFile) throws IOException {
-        System.out.println("controller도착");
         FeedbackCreateRequestDto feedbackCreateRequestDto = new FeedbackCreateRequestDto(textSentence,audioFile);
         return this.feedbackApplicationService.create(userDetails.getUser(),feedbackCreateRequestDto);
     }
