@@ -42,13 +42,15 @@ public enum ErrorCode {
 
     // User
     USER_ALREADY_EXIST(-300, "이미 회원가입된 유저 이메일 입니다.", 400),
-    NICKNAME_ALREADY_EXIST(-300, "이미 존재하는 닉네임 입니다.", 400),
-    USER_NOT_EXIST(-301, "존재하지 않는 유저입니다.", 406),
-    USER_WRONG_PASSWORD(-302, "비밀번호가 틀렸습니다.", 401),
+    NICKNAME_ALREADY_EXIST(-301, "이미 존재하는 닉네임 입니다.", 400),
+    USER_NOT_EXIST(-302, "존재하지 않는 유저입니다.", 406),
+    USER_WRONG_PASSWORD(-303, "비밀번호가 틀렸습니다.", 401),
 
     //Feedback
-    AUDIO_FILE_NOT_EXIST(-301, "오디오 파일이 없습니다.", 406),
-    IMAGE_FILE_NOT_EXIST(-301, "이미지 파일이 없습니다.", 406);
+    AUDIO_FILE_NOT_EXIST(-401, "오디오 파일이 없습니다.", 406),
+    IMAGE_FILE_NOT_EXIST(-402, "이미지 파일이 없습니다.", 406),
+    VOICE_NOT_DETECTED(-403, "목소리를 인식하지 못했습니다.", 406),
+    VOICE_INCORRECT_PHRASE(-404, "다른 문장을 발음했습니다.", 406);
 
 
     private final int errorCode;
