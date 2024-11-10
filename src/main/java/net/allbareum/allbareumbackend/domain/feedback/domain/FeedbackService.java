@@ -1,8 +1,8 @@
 package net.allbareum.allbareumbackend.domain.feedback.domain;
 
 import lombok.RequiredArgsConstructor;
-import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackCreateRequestDto;
-import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackResponseDto;
+import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackCreateRequestDto;
+import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackResponseDto;
 import net.allbareum.allbareumbackend.domain.feedback.infrastructure.FeedbackRepository;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
 import net.allbareum.allbareumbackend.global.exception.CustomException;
@@ -23,9 +23,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -38,10 +35,10 @@ public class FeedbackService {
     @Value("${ml.server.url}")
     private String mlServerUrl;
 
-    public FeedbackResponseDto create(User user, FeedbackCreateRequestDto feedbackCreateRequestDto) throws IOException {
+    public PronunciationFeedbackResponseDto createPronunciation(User user, PronunciationFeedbackCreateRequestDto pronunciationFeedbackCreateRequestDto) throws IOException {
         // 1. 음성 파일 바이트 배열로 변환
-        byte[] audioBytes = feedbackCreateRequestDto.getAudioFile().getBytes();
-        String originalFileName = feedbackCreateRequestDto.getAudioFile().getOriginalFilename();
+        byte[] audioBytes = pronunciationFeedbackCreateRequestDto.getAudioFile().getBytes();
+        String originalFileName = pronunciationFeedbackCreateRequestDto.getAudioFile().getOriginalFilename();
 
         // 2. HTTP 요청 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -55,7 +52,7 @@ public class FeedbackService {
                 return originalFileName; // 임시 파일 이름 설정
             }
         });
-        body.add("text", feedbackCreateRequestDto.getTextSentence());
+        body.add("text", pronunciationFeedbackCreateRequestDto.getTextSentence());
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         try {
@@ -97,7 +94,7 @@ public class FeedbackService {
 
             // Feedback 객체 생성
             Feedback feedback = Feedback.builder()
-                    .textSentence(feedbackCreateRequestDto.getTextSentence())
+                    .textSentence(pronunciationFeedbackCreateRequestDto.getTextSentence())
                     .transcription(transcription)
                     .pronunciation_feedback(pronunciation_feedback)
                     .pronunciation_score(pronunciation_score)
@@ -108,7 +105,7 @@ public class FeedbackService {
                     .build();
 
             feedbackRepository.save(feedback);
-            return new FeedbackResponseDto(feedback);
+            return new PronunciationFeedbackResponseDto(feedback);
 
         } catch (HttpClientErrorException e) {
             // 에러 상태 코드 확인

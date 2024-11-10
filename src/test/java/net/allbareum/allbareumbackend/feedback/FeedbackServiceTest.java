@@ -1,8 +1,8 @@
 package net.allbareum.allbareumbackend.feedback;
 
 import net.allbareum.allbareumbackend.domain.feedback.application.FeedbackApplicationService;
-import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackCreateRequestDto;
-import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackResponseDto;
+import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackCreateRequestDto;
+import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackResponseDto;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
 import net.allbareum.allbareumbackend.domain.user.infrastructure.UserRepository;
 import net.allbareum.allbareumbackend.util.ObjectFixtures;
@@ -14,7 +14,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -50,24 +49,24 @@ public class FeedbackServiceTest {
         );
 
         String textSentence = "나는 행복하게 끝나는 영화가 좋다";
-        FeedbackCreateRequestDto feedbackCreateRequestDto =
-                new FeedbackCreateRequestDto(textSentence, audioFile);
+        PronunciationFeedbackCreateRequestDto pronunciationFeedbackCreateRequestDto =
+                new PronunciationFeedbackCreateRequestDto(textSentence, audioFile);
 
         // When: 서비스 호출
-        FeedbackResponseDto feedbackResponseDto =
-                feedbackApplicationService.createPronunciation(user, feedbackCreateRequestDto);
+        PronunciationFeedbackResponseDto pronunciationFeedbackResponseDto =
+                feedbackApplicationService.createPronunciation(user, pronunciationFeedbackCreateRequestDto);
 
         // Then: 응답 값 검증
-        assertNotNull(feedbackResponseDto);
-        assertEquals("나는 행복하게 끝나는 영화가 좋다", feedbackResponseDto.getTextSentence());
-        assertNotNull(feedbackResponseDto.getPronunciation_feedbacks());
-        assertNotNull(feedbackResponseDto.getPronunciation_feedback_image());
-        assertNotNull(feedbackResponseDto.getWord_index());
-        assertNotNull(feedbackResponseDto.getTextSentence());
-        assertNotNull(feedbackResponseDto.getFeedback_count());
-        assertNotNull(feedbackResponseDto.getTextSentence());
-        assertNotNull(feedbackResponseDto.getWrong_spellings());
-        assertNotNull(feedbackResponseDto.getIntonation_feedback());
-        assertNotNull(feedbackResponseDto.getIntonation_feedback_image());
+        assertNotNull(pronunciationFeedbackResponseDto);
+        assertEquals("나는 행복하게 끝나는 영화가 좋다", pronunciationFeedbackResponseDto.getTextSentence());
+        assertNotNull(pronunciationFeedbackResponseDto.getPronunciation_feedbacks());
+        assertNotNull(pronunciationFeedbackResponseDto.getPronunciation_feedback_image());
+        assertNotNull(pronunciationFeedbackResponseDto.getWord_index());
+        assertNotNull(pronunciationFeedbackResponseDto.getTextSentence());
+        assertNotNull(pronunciationFeedbackResponseDto.getFeedback_count());
+        assertNotNull(pronunciationFeedbackResponseDto.getTextSentence());
+        assertNotNull(pronunciationFeedbackResponseDto.getWrong_spellings());
+        assertNotNull(pronunciationFeedbackResponseDto.getIntonation_feedback());
+        assertNotNull(pronunciationFeedbackResponseDto.getIntonation_feedback_image());
     }
 }

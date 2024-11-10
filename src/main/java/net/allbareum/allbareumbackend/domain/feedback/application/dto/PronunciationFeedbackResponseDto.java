@@ -5,14 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.allbareum.allbareumbackend.domain.feedback.domain.Feedback;
-import net.allbareum.allbareumbackend.domain.user.domain.User;
-
-import java.util.List;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FeedbackResponseDto {
+public class PronunciationFeedbackResponseDto {
     private String id;
     private String userId;
     private String textSentence;
@@ -27,7 +24,7 @@ public class FeedbackResponseDto {
 
 
     @Builder
-    public FeedbackResponseDto(Feedback feedback) {
+    public PronunciationFeedbackResponseDto(Feedback feedback) {
         this.id = feedback.getId();
         this.userId = feedback.getUser().getId();
         this.textSentence = feedback.getTextSentence();
