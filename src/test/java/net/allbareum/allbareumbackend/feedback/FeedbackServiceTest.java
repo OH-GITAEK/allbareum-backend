@@ -55,15 +55,18 @@ public class FeedbackServiceTest {
 
         // When: 서비스 호출
         FeedbackResponseDto feedbackResponseDto =
-                feedbackApplicationService.create(user, feedbackCreateRequestDto);
+                feedbackApplicationService.createPronunciation(user, feedbackCreateRequestDto);
 
         // Then: 응답 값 검증
         assertNotNull(feedbackResponseDto);
         assertEquals("나는 행복하게 끝나는 영화가 좋다", feedbackResponseDto.getTextSentence());
-        assertNotNull(feedbackResponseDto.getPronunciation_feedback());
+        assertNotNull(feedbackResponseDto.getPronunciation_feedbacks());
         assertNotNull(feedbackResponseDto.getPronunciation_feedback_image());
-        assertNotNull(feedbackResponseDto.getTranscription());
+        assertNotNull(feedbackResponseDto.getWord_index());
         assertNotNull(feedbackResponseDto.getTextSentence());
+        assertNotNull(feedbackResponseDto.getFeedback_count());
+        assertNotNull(feedbackResponseDto.getTextSentence());
+        assertNotNull(feedbackResponseDto.getWrong_spellings());
         assertNotNull(feedbackResponseDto.getIntonation_feedback());
         assertNotNull(feedbackResponseDto.getIntonation_feedback_image());
     }
