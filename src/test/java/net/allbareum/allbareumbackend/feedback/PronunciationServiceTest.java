@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -36,7 +37,7 @@ public class PronunciationServiceTest {
 
 
     @Test
-    public void testCreateFeedback() throws IOException {
+    public void testCreateFeedback() throws IOException, ExecutionException, InterruptedException {
         // Given: 오디오 파일을 리소스에서 읽어와 MockMultipartFile로 생성
         ClassPathResource audioResource = new ClassPathResource("0_3gp.3gp");
         InputStream inputStream = audioResource.getInputStream();

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletionException;
 
 import static net.allbareum.allbareumbackend.global.exception.ErrorCode.PARAMETER_GRAMMAR_ERROR;
 import static net.allbareum.allbareumbackend.global.exception.ErrorCode.PARAMETER_VALIDATION_ERROR;
@@ -76,5 +77,28 @@ public class ExceptionAdvice {
         HttpStatus status = HttpStatus.valueOf(e.getErrorCode().getHttpCode()); // ErrorCode에서 HTTP 상태 코드 가져오기
         ErrorResponse<?> response = ErrorResponse.of(e.getErrorCode().getErrorCode(), e.getErrorCode().getMessage());
         return new ResponseEntity<>(response, status);
+    }
+
+    @ExceptionHandler(CompletionException.class)
+    public ResponseEntity<ErrorResponse<?>> handleCompletionException(CompletionException e) {
+        Throwable cause = e.getCause(); // 원본 예외 가져오기
+
+        if (cause instanceof CustomException) {
+            // CustomException 처리
+            CustomException customException = (CustomException) cause;
+            ErrorCode errorCode = customException.getErrorCode();
+            ErrorResponse<?> errorResponse = ErrorResponse.of(
+                    errorCode.getErrorCode(),
+                    errorCode.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorCode.getHttpCode()));
+        }  else {
+            // 그 외의 예외 처리
+            ErrorResponse<?> errorResponse = ErrorResponse.of(
+                    ErrorCode.SERVER_UNTRACKED_ERROR.getErrorCode(),
+                    ErrorCode.SERVER_UNTRACKED_ERROR.getMessage()
+            );
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -23,60 +23,48 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
 public class PronunciationService {
     private final FeedbackRepository feedbackRepository;
+    private final FeedbackAsyncService feedbackAsyncService;
     private final RestTemplate restTemplate;
     private final S3Service s3Service;
 
     @Value("${ml.server.url}")
     private String mlServerUrl;
 
-    public PronunciationFeedbackResponseDto createPronunciation(User user, PronunciationFeedbackCreateRequestDto pronunciationFeedbackCreateRequestDto) throws IOException {
-        // 1. 음성 파일 바이트 배열로 변환
-        byte[] audioBytes = pronunciationFeedbackCreateRequestDto.getAudioFile().getBytes();
-        String originalFileName = pronunciationFeedbackCreateRequestDto.getAudioFile().getOriginalFilename();
+    public PronunciationFeedbackResponseDto createPronunciation(User user, PronunciationFeedbackCreateRequestDto pronunciationFeedbackCreateRequestDto) throws IOException, ExecutionException, InterruptedException {
+        // 비동기 호출
+        CompletableFuture<ResponseEntity<Map>> pronunciationFeedbackFuture =
+                feedbackAsyncService.getPronunciationFeedback(pronunciationFeedbackCreateRequestDto);
 
-        // 2. HTTP 요청 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        CompletableFuture<ResponseEntity<Map>> pronouncedTextFuture =
+                feedbackAsyncService.getPronouncedText(pronunciationFeedbackCreateRequestDto.getTextSentence());
 
-        // 3. HTTP 요청 바디 구성
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("audio", new ByteArrayResource(audioBytes) {
-            @Override
-            public String getFilename() {
-                return originalFileName; // 임시 파일 이름 설정
-            }
-        });
+        // 두 비동기 작업이 모두 완료될 때까지 기다림
+        CompletableFuture.allOf(pronunciationFeedbackFuture, pronouncedTextFuture).join();
 
-        body.add("text", pronunciationFeedbackCreateRequestDto.getTextSentence());
 
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        System.out.println(requestEntity);
+        // 응답 처리
+        Map<String, Object> feedbackResponseBody = pronunciationFeedbackFuture.get().getBody();
+        Map<String, Object> textResponseBody = pronouncedTextFuture.get().getBody();
 
-        // 4. ML 서버로 요청 전송
-        ResponseEntity<Map> response = restTemplate.postForEntity(
-                mlServerUrl + "/get-pronunciation-feedback", requestEntity, Map.class);
-
-        // 5. 응답 처리
-        Map<String, Object> responseBody = response.getBody();
-        if (responseBody == null) {
-            throw new CustomException(ErrorCode.ML_SERVER_RESPONSE_IS_EMPTY);
-        }
         // 필드 값 추출
-        int status = (int) responseBody.get("status");
-        String transcription = (String) responseBody.get("transcription");
-        int feedbackCount = (int) responseBody.getOrDefault("feedback_count", 1);
-        List<Integer> wordIndex = (List<Integer>) responseBody.getOrDefault("word_indexes", List.of());
-        List<String> pronunciationFeedbacks = (List<String>) responseBody.getOrDefault("pronunciation_feedbacks", List.of());
-        List<String> wrongSpellings = (List<String>) responseBody.getOrDefault("wrong_spellings", List.of());
-        Double pronunciationScore = Double.valueOf(responseBody.getOrDefault("accuracy", "0").toString());
+        int status = (int) feedbackResponseBody.get("status");
+        String pronounced_text = (String) textResponseBody.get("pronounced_text");
+        String transcription = (String) feedbackResponseBody.get("transcription");
+        int feedbackCount = (int) feedbackResponseBody.getOrDefault("feedback_count", 1);
+        List<Integer> wordIndex = (List<Integer>) feedbackResponseBody.getOrDefault("word_indexes", List.of());
+        List<String> pronunciationFeedbacks = (List<String>) feedbackResponseBody.getOrDefault("pronunciation_feedbacks", List.of());
+        List<String> wrongSpellings = (List<String>) feedbackResponseBody.getOrDefault("wrong_spellings", List.of());
+        Double pronunciationScore = Double.valueOf(feedbackResponseBody.getOrDefault("accuracy", "0").toString());
 
         // 이미지 정보 추출
-        List<String> feedbackImages = (List<String>) responseBody.get("feedback_image_names");
+        List<String> feedbackImages = (List<String>) feedbackResponseBody.get("feedback_image_names");
         System.out.println("feedbackImages: " + feedbackImages);
         List<String> feedbackImageUrls = feedbackImages != null
                 ? feedbackImages.stream()
@@ -88,6 +76,7 @@ public class PronunciationService {
         // Pronunciation 엔티티 빌드
         Pronunciation pronunciation = Pronunciation.builder()
                 .user(user)
+                .pronounced_text(pronounced_text)
                 .textSentence(pronunciationFeedbackCreateRequestDto.getTextSentence())
                 .status(status)
                 .transcription(transcription)

@@ -17,6 +17,7 @@ public class PronunciationFeedbackResponseDto {
     private String textSentence;
 
     private int status; // 발음 상태
+    private String pronounced_text; //올바르게 발음한 문장
     private String transcription; // 음성 텍스트 전사
     private int feedbackCount; // 피드백 수
     private List<Integer> wordIndex; // 문제 발생 단어 인덱스 리스트
@@ -31,6 +32,7 @@ public class PronunciationFeedbackResponseDto {
         this.userId = pronunciation.getUser().getId();
         this.textSentence = pronunciation.getTextSentence();
         this.status = pronunciation.getStatus(); // 발음 상태
+        this.pronounced_text = pronunciation.getPronounced_text(); //올바르게 발음한 문장
         this.transcription = pronunciation.getTranscription(); // 음성 텍스트 전사
         this.feedbackCount = pronunciation.getFeedbackCount(); // 피드백 수
         this.wordIndex = pronunciation.getWordIndex(); // 문제 발생 단어 인덱스 리스트

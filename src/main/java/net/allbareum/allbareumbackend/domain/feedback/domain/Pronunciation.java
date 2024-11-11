@@ -25,6 +25,7 @@ public class Pronunciation {
     private String textSentence; // 프론트에서 전달받은 텍스트 문장
 
     private int status; // 발음 상태
+    private String pronounced_text; //올바르게 발음한 문장
     private String transcription; // 음성 텍스트 전사
     private int feedbackCount; // 피드백 수
     @ElementCollection
