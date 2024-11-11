@@ -1,8 +1,9 @@
-package net.allbareum.allbareumbackend.domain.feedback.domain;
+package net.allbareum.allbareumbackend.domain.feedback.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackCreateRequestDto;
 import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackResponseDto;
+import net.allbareum.allbareumbackend.domain.feedback.domain.Pronunciation;
 import net.allbareum.allbareumbackend.domain.feedback.infrastructure.FeedbackRepository;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
 import net.allbareum.allbareumbackend.global.exception.CustomException;
