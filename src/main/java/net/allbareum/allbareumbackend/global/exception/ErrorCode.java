@@ -49,8 +49,11 @@ public enum ErrorCode {
     //Feedback
     AUDIO_FILE_NOT_EXIST(-401, "오디오 파일이 없습니다.", 406),
     IMAGE_FILE_NOT_EXIST(-402, "이미지 파일이 없습니다.", 406),
-    VOICE_NOT_DETECTED(-403, "목소리를 인식하지 못했습니다.", 406),
-    VOICE_INCORRECT_PHRASE(-404, "다른 문장을 발음했습니다.", 406);
+    VOICE_NOT_DETECTED(-403, "목소리를 인식하지 못했습니다.", 422),
+    VOICE_INCORRECT_PHRASE(-404, "다른 문장을 발음했습니다.", 423),
+    ML_SERVER_RESPONSE_IS_EMPTY(-405, "ML 서버로부터 응답이 없습니다.", 500),
+    ML_SERVER_NOT_IMPLEMENTED(-406, "ML 서버에서 아직 구현되지 않은 기능입니다.", 501),
+    UNPROCESSABLE_TEXT(-407, "유효한 한글 문장이 아닙니다.", 422);
 
 
     private final int errorCode;
