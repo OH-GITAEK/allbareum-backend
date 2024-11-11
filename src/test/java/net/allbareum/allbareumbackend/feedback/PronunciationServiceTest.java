@@ -19,7 +19,7 @@ import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-public class FeedbackServiceTest {
+public class PronunciationServiceTest {
     @Autowired
     private FeedbackApplicationService feedbackApplicationService;
     @Autowired
@@ -59,14 +59,12 @@ public class FeedbackServiceTest {
         // Then: 응답 값 검증
         assertNotNull(pronunciationFeedbackResponseDto);
         assertEquals("나는 행복하게 끝나는 영화가 좋다", pronunciationFeedbackResponseDto.getTextSentence());
-        assertNotNull(pronunciationFeedbackResponseDto.getPronunciation_feedbacks());
-        assertNotNull(pronunciationFeedbackResponseDto.getPronunciation_feedback_image());
-        assertNotNull(pronunciationFeedbackResponseDto.getWord_index());
+        assertNotNull(pronunciationFeedbackResponseDto.getPronunciationFeedbacks());
         assertNotNull(pronunciationFeedbackResponseDto.getTextSentence());
-        assertNotNull(pronunciationFeedbackResponseDto.getFeedback_count());
-        assertNotNull(pronunciationFeedbackResponseDto.getTextSentence());
-        assertNotNull(pronunciationFeedbackResponseDto.getWrong_spellings());
-        assertNotNull(pronunciationFeedbackResponseDto.getIntonation_feedback());
-        assertNotNull(pronunciationFeedbackResponseDto.getIntonation_feedback_image());
+        assertNotNull(pronunciationFeedbackResponseDto.getFeedbackImageUrls());
+        assertNotNull(pronunciationFeedbackResponseDto.getUserId());
+        assertNotNull(pronunciationFeedbackResponseDto.getTranscription());
+        assertNotNull(pronunciationFeedbackResponseDto.getWordIndex());
+        assertNotNull(pronunciationFeedbackResponseDto.getWrongSpellings());
     }
 }

@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.allbareum.allbareumbackend.domain.feedback.domain.Feedback;
+import net.allbareum.allbareumbackend.domain.feedback.domain.Pronunciation;
+
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -14,25 +16,27 @@ public class PronunciationFeedbackResponseDto {
     private String userId;
     private String textSentence;
 
-    private String transcription;
-    private String pronunciation_feedback;
-    private Double pronunciation_score;
-    private String pronunciation_feedback_image;
-
-    private String intonation_feedback;
-    private String intonation_feedback_image;
-
+    private int status; // 발음 상태
+    private String transcription; // 음성 텍스트 전사
+    private int feedbackCount; // 피드백 수
+    private List<Integer> wordIndex; // 문제 발생 단어 인덱스 리스트
+    private List<String> pronunciationFeedbacks; // 발음 피드백 리스트
+    private List<String> feedbackImageUrls; // 피드백 이미지 이름 리스트
+    private List<String> wrongSpellings; // 잘못된 발음 리스트
+    private double pronunciationScore; // 발음 점수
 
     @Builder
-    public PronunciationFeedbackResponseDto(Feedback feedback) {
-        this.id = feedback.getId();
-        this.userId = feedback.getUser().getId();
-        this.textSentence = feedback.getTextSentence();
-        this.transcription = feedback.getTranscription();
-        this.pronunciation_feedback = feedback.getPronunciation_feedback();
-        this.pronunciation_score = feedback.getPronunciation_score();
-        this.pronunciation_feedback_image =feedback.getPronunciation_feedback_image();
-        this.intonation_feedback = feedback.getIntonation_feedback();
-        this.intonation_feedback_image = feedback.getIntonation_feedback_image();
+    public PronunciationFeedbackResponseDto(Pronunciation pronunciation) {
+        this.id = pronunciation.getId();
+        this.userId = pronunciation.getUser().getId();
+        this.textSentence = pronunciation.getTextSentence();
+        this.status = pronunciation.getStatus(); // 발음 상태
+        this.transcription = pronunciation.getTranscription(); // 음성 텍스트 전사
+        this.feedbackCount = pronunciation.getFeedbackCount(); // 피드백 수
+        this.wordIndex = pronunciation.getWordIndex(); // 문제 발생 단어 인덱스 리스트
+        this.pronunciationFeedbacks = pronunciation.getPronunciationFeedbacks(); // 발음 피드백 리스트
+        this.feedbackImageUrls = pronunciation.getFeedbackImageUrls(); // 피드백 이미지 이름 리스트
+        this.wrongSpellings = pronunciation.getWrongSpellings(); // 잘못된 발음 리스트
+        this.pronunciationScore = pronunciation.getPronunciationScore(); // 발음 점수
     }
 }
