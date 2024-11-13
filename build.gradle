@@ -33,6 +33,7 @@ dependencies {
 	implementation 'org.springframework:spring-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	implementation 'org.springframework.boot:spring-boot-starter-actuator' //actuator 추가
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 
 	//스프링 시큐리티 의존성
