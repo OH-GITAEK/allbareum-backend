@@ -33,6 +33,8 @@ dependencies {
 	implementation 'org.springframework:spring-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
 	//스프링 시큐리티 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
