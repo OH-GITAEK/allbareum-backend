@@ -1,6 +1,6 @@
 # 올발음 (AllBareum)
 
-### 청각장애인을 위한 발화 교정 애플리케이션
+### 농·난청인을 위한 발화 교정 애플리케이션
 
 **올발음**은 농·난청인의 발화를 교정하는 데 도움을 주는 애플리케이션입니다. 사용자의 발음을 분석하여 틀린 부분을 알려주고, 정확한 발음과 입 모양에 대한 피드백을 제공합니다.
 
@@ -77,8 +77,7 @@
 <img src="src/main/resources/static/img.png" alt="로그인 화면" width="300">
 
 ### 발음 교정 화면
-<img src="src/main/resources/static/img_1.png" alt="발음 교정 화면 1" width="300">
-<img src="src/main/resources/static/img_2.png" alt="발음 교정 화면 2" width="300">
+<img src="src/main/resources/static/img_1.png" alt="발음 교정 화면 1" width="300"> <img src="src/main/resources/static/img_2.png" alt="발음 교정 화면 2" width="300">
 
 ### 모니터링 시스템
 ![img_4.png](src/main/resources/static/img_4.png)
