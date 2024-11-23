@@ -57,11 +57,11 @@ public class PronunciationService {
         int status = (int) feedbackResponseBody.get("status");
         String pronounced_text = (String) textResponseBody.get("pronounced_text");
         String transcription = (String) feedbackResponseBody.get("transcription");
-        int feedbackCount = (int) feedbackResponseBody.getOrDefault("feedback_count", 1);
+        int feedbackCount = (int) feedbackResponseBody.get("feedback_count");
         List<Integer> wordIndex = (List<Integer>) feedbackResponseBody.getOrDefault("word_indexes", List.of());
         List<String> pronunciationFeedbacks = (List<String>) feedbackResponseBody.getOrDefault("pronunciation_feedbacks", List.of());
         List<String> wrongSpellings = (List<String>) feedbackResponseBody.getOrDefault("wrong_spellings", List.of());
-        Double pronunciationScore = Double.valueOf(feedbackResponseBody.getOrDefault("accuracy", "0").toString());
+        Double pronunciationScore = Double.valueOf(feedbackResponseBody.get("pronunciation_score").toString());
 
         // 이미지 정보 추출
         List<String> feedbackImages = (List<String>) feedbackResponseBody.get("feedback_image_names");
