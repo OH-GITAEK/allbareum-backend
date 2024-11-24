@@ -79,8 +79,8 @@ jobs:
           script: |
             set -e
             cd ~/Speech-Correction-ML-Server
-            git reset --hard HEAD
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main
 
             echo "${{ secrets.COMPOSE_FILE_CONTENT }}" | tr -d '\r' > docker-compose.yml
 
