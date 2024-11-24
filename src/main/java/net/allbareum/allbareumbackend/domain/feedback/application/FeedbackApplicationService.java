@@ -2,7 +2,7 @@ package net.allbareum.allbareumbackend.domain.feedback.application;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackCreateRequestDto;
+import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackCreateRequestDto;
 import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackResponseDto;
 import net.allbareum.allbareumbackend.domain.feedback.domain.service.PronunciationService;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
@@ -17,7 +17,7 @@ public class FeedbackApplicationService {
     private final PronunciationService pronunciationService;
 
     @Transactional
-    public PronunciationFeedbackResponseDto createPronunciation(User user, PronunciationFeedbackCreateRequestDto pronunciationFeedbackCreateRequestDto) throws IOException, ExecutionException, InterruptedException {
-        return pronunciationService.createPronunciation(user, pronunciationFeedbackCreateRequestDto);
+    public PronunciationFeedbackResponseDto createPronunciation(User user, FeedbackCreateRequestDto feedbackCreateRequestDto) throws IOException, ExecutionException, InterruptedException {
+        return pronunciationService.createPronunciation(user, feedbackCreateRequestDto);
     }
 }

@@ -3,7 +3,7 @@ package net.allbareum.allbareumbackend.domain.feedback.presentation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import net.allbareum.allbareumbackend.domain.feedback.application.FeedbackApplicationService;
-import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackCreateRequestDto;
+import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackCreateRequestDto;
 import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackResponseDto;
 import net.allbareum.allbareumbackend.global.security.userdetails.CustomUserDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +24,7 @@ public class FeedbackController {
     @Operation(summary = "피드백 생성")
     public PronunciationFeedbackResponseDto createPronunciation(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestPart("textSentence") String textSentence,
                                                                 @RequestPart("audioFile") MultipartFile audioFile) throws IOException, ExecutionException, InterruptedException {
-        PronunciationFeedbackCreateRequestDto pronunciationFeedbackCreateRequestDto = new PronunciationFeedbackCreateRequestDto(textSentence,audioFile);
-        return this.feedbackApplicationService.createPronunciation(userDetails.getUser(), pronunciationFeedbackCreateRequestDto);
+        FeedbackCreateRequestDto feedbackCreateRequestDto = new FeedbackCreateRequestDto(textSentence,audioFile);
+        return this.feedbackApplicationService.createPronunciation(userDetails.getUser(), feedbackCreateRequestDto);
     }
 }

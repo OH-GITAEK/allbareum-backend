@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PronunciationFeedbackCreateRequestDto {
+public class FeedbackCreateRequestDto {
     @NotEmpty(message = "피드백 받을 문장을 입력해주세요")
     private String textSentence;
 

@@ -1,7 +1,7 @@
 package net.allbareum.allbareumbackend.feedback;
 
 import net.allbareum.allbareumbackend.domain.feedback.application.FeedbackApplicationService;
-import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackCreateRequestDto;
+import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackCreateRequestDto;
 import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackResponseDto;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
 import net.allbareum.allbareumbackend.domain.user.infrastructure.UserRepository;
@@ -50,12 +50,12 @@ public class PronunciationServiceTest {
         );
 
         String textSentence = "나는 행복하게 끝나는 영화가 좋다";
-        PronunciationFeedbackCreateRequestDto pronunciationFeedbackCreateRequestDto =
-                new PronunciationFeedbackCreateRequestDto(textSentence, audioFile);
+        FeedbackCreateRequestDto feedbackCreateRequestDto =
+                new FeedbackCreateRequestDto(textSentence, audioFile);
 
         // When: 서비스 호출
         PronunciationFeedbackResponseDto pronunciationFeedbackResponseDto =
-                feedbackApplicationService.createPronunciation(user, pronunciationFeedbackCreateRequestDto);
+                feedbackApplicationService.createPronunciation(user, feedbackCreateRequestDto);
 
         // Then: 응답 값 검증
         assertNotNull(pronunciationFeedbackResponseDto);
