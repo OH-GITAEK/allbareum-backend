@@ -29,7 +29,7 @@ public class FeedbackController {
         return this.feedbackApplicationService.createPronunciation(userDetails.getUser(), feedbackCreateRequestDto);
     }
 
-    @PostMapping(value = "/create-inotation", produces = "application/json", consumes = "multipart/form-data")
+    @PostMapping(value = "/create-intonation", produces = "application/json", consumes = "multipart/form-data")
     @Operation(summary = "피드백 생성")
     public IntonationFeedbackResponseDto createIntonation(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestPart("textSentence") String textSentence,
                                                              @RequestPart("audioFile") MultipartFile audioFile) throws IOException, ExecutionException, InterruptedException {

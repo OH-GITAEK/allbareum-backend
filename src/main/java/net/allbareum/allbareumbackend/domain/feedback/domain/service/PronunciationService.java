@@ -7,6 +7,7 @@ import net.allbareum.allbareumbackend.domain.feedback.domain.Pronunciation;
 import net.allbareum.allbareumbackend.domain.feedback.infrastructure.PronunciationRepository;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
 import net.allbareum.allbareumbackend.global.service.S3Service;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -64,12 +65,16 @@ public class PronunciationService {
                 .toList()
                 : List.of();
 
+        // textSentence의 쌍따옴표 제거
+        String rawTextSentence = feedbackCreateRequestDto.getTextSentence();
+        String processedTextSentence = StringUtils.strip(rawTextSentence, "\""); // 쌍따옴표 제거
+
 
         // Pronunciation 엔티티 빌드
         Pronunciation pronunciation = Pronunciation.builder()
                 .user(user)
                 .pronounced_text(pronounced_text)
-                .textSentence(feedbackCreateRequestDto.getTextSentence())
+                .textSentence(processedTextSentence)
                 .status(status)
                 .transcription(transcription)
                 .feedbackCount(feedbackCount)
