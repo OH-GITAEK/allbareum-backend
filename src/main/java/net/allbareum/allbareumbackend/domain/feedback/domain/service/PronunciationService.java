@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackCreateRequestDto;
 import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackResponseDto;
 import net.allbareum.allbareumbackend.domain.feedback.domain.Pronunciation;
-import net.allbareum.allbareumbackend.domain.feedback.infrastructure.FeedbackRepository;
+import net.allbareum.allbareumbackend.domain.feedback.infrastructure.PronunciationRepository;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
 import net.allbareum.allbareumbackend.global.service.S3Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 @Service
 @RequiredArgsConstructor
 public class PronunciationService {
-    private final FeedbackRepository feedbackRepository;
+    private final PronunciationRepository pronunciationRepository;
     private final FeedbackAsyncService feedbackAsyncService;
     private final RestTemplate restTemplate;
     private final S3Service s3Service;
@@ -32,7 +32,7 @@ public class PronunciationService {
     public PronunciationFeedbackResponseDto createPronunciation(User user, FeedbackCreateRequestDto feedbackCreateRequestDto) throws IOException, ExecutionException, InterruptedException {
         // 비동기 호출
         CompletableFuture<ResponseEntity<Map>> pronunciationFeedbackFuture =
-                feedbackAsyncService.getPronunciationFeedback(feedbackCreateRequestDto);
+                feedbackAsyncService.getFeedback(feedbackCreateRequestDto);
 
         CompletableFuture<ResponseEntity<Map>> pronouncedTextFuture =
                 feedbackAsyncService.getPronouncedText(feedbackCreateRequestDto.getTextSentence());
@@ -80,7 +80,7 @@ public class PronunciationService {
                 .pronunciationScore(pronunciationScore)
                 .build();
 
-        feedbackRepository.save(pronunciation);
+        pronunciationRepository.save(pronunciation);
         // DTO로 반환
         return new PronunciationFeedbackResponseDto(pronunciation);
     }
