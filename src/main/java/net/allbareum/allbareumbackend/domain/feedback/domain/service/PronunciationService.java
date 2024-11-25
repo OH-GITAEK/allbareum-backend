@@ -1,23 +1,15 @@
 package net.allbareum.allbareumbackend.domain.feedback.domain.service;
 
 import lombok.RequiredArgsConstructor;
-import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackCreateRequestDto;
+import net.allbareum.allbareumbackend.domain.feedback.application.dto.FeedbackCreateRequestDto;
 import net.allbareum.allbareumbackend.domain.feedback.application.dto.PronunciationFeedbackResponseDto;
 import net.allbareum.allbareumbackend.domain.feedback.domain.Pronunciation;
-import net.allbareum.allbareumbackend.domain.feedback.infrastructure.FeedbackRepository;
+import net.allbareum.allbareumbackend.domain.feedback.infrastructure.PronunciationRepository;
 import net.allbareum.allbareumbackend.domain.user.domain.User;
-import net.allbareum.allbareumbackend.global.exception.CustomException;
-import net.allbareum.allbareumbackend.global.exception.ErrorCode;
 import net.allbareum.allbareumbackend.global.service.S3Service;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -29,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 @Service
 @RequiredArgsConstructor
 public class PronunciationService {
-    private final FeedbackRepository feedbackRepository;
+    private final PronunciationRepository pronunciationRepository;
     private final FeedbackAsyncService feedbackAsyncService;
     private final RestTemplate restTemplate;
     private final S3Service s3Service;
@@ -37,13 +29,13 @@ public class PronunciationService {
     @Value("${ml.server.url}")
     private String mlServerUrl;
 
-    public PronunciationFeedbackResponseDto createPronunciation(User user, PronunciationFeedbackCreateRequestDto pronunciationFeedbackCreateRequestDto) throws IOException, ExecutionException, InterruptedException {
+    public PronunciationFeedbackResponseDto createPronunciation(User user, FeedbackCreateRequestDto feedbackCreateRequestDto) throws IOException, ExecutionException, InterruptedException {
         // 비동기 호출
         CompletableFuture<ResponseEntity<Map>> pronunciationFeedbackFuture =
-                feedbackAsyncService.getPronunciationFeedback(pronunciationFeedbackCreateRequestDto);
+                feedbackAsyncService.getFeedback(feedbackCreateRequestDto);
 
         CompletableFuture<ResponseEntity<Map>> pronouncedTextFuture =
-                feedbackAsyncService.getPronouncedText(pronunciationFeedbackCreateRequestDto.getTextSentence());
+                feedbackAsyncService.getPronouncedText(feedbackCreateRequestDto.getTextSentence());
 
         // 두 비동기 작업이 모두 완료될 때까지 기다림
         CompletableFuture.allOf(pronunciationFeedbackFuture, pronouncedTextFuture).join();
@@ -77,7 +69,7 @@ public class PronunciationService {
         Pronunciation pronunciation = Pronunciation.builder()
                 .user(user)
                 .pronounced_text(pronounced_text)
-                .textSentence(pronunciationFeedbackCreateRequestDto.getTextSentence())
+                .textSentence(feedbackCreateRequestDto.getTextSentence())
                 .status(status)
                 .transcription(transcription)
                 .feedbackCount(feedbackCount)
@@ -88,7 +80,7 @@ public class PronunciationService {
                 .pronunciationScore(pronunciationScore)
                 .build();
 
-        feedbackRepository.save(pronunciation);
+        pronunciationRepository.save(pronunciation);
         // DTO로 반환
         return new PronunciationFeedbackResponseDto(pronunciation);
     }
