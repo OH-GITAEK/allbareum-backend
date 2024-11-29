@@ -82,18 +82,14 @@ public class IntonationService {
 
         // 각 파트 파싱
         int status = Integer.parseInt(parser.getTextPart("status"));
-        int feedbackCount = Integer.parseInt(parser.getTextPart("feedback_count"));
-        String wordIndex = parser.getTextPart("word_indexes");
-        String intonationFeedbacks = parser.getTextPart("intonation_feedbacks");
+        String intonationFeedbacks = parser.getTextPart("feedback_text");
         double intonationScore = Double.parseDouble(parser.getTextPart("intonation_score"));
         System.out.println("Status: " + status);
-        System.out.println("Feedback Count: " + feedbackCount);
-        System.out.println("Word Index: " + wordIndex);
         System.out.println("Intonation Feedbacks: " + intonationFeedbacks);
         System.out.println("Intonation Score: " + intonationScore);
 
         // 이미지 파일 파싱
-        MultipartFile intonationFeedbackImage = parser.getFilePart("feedback_image ");
+        MultipartFile intonationFeedbackImage = parser.getFilePart("feedback_image");
         String intonationFeedbackImageUrl = "https://allbareum.s3.ap-northeast-2.amazonaws.com/images/100point.png";
         if (intonationFeedbackImage == null) {
             System.out.println("Feedback image is null or not provided");
@@ -109,10 +105,8 @@ public class IntonationService {
 
         // Feedback 객체 생성
         Intonation intonation = Intonation.builder()
-                .textSentence(feedbackCreateRequestDto.getTextSentence())
+                .sentenceCode(feedbackCreateRequestDto.getTextSentence())
                 .status(status)
-                .feedbackCount(feedbackCount)
-                .wordIndex(wordIndex)
                 .intonationFeedbacks(intonationFeedbacks)
                 .feedbackImageUrls(intonationFeedbackImageUrl)
                 .intonationScore(intonationScore)

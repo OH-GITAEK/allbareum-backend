@@ -22,12 +22,9 @@ public class Intonation {
     @Column(name = "feedback_id", nullable = false, unique = true)
     private String id;
 
-    private String textSentence; // 프론트에서 전달받은 텍스트 문장
+    private String sentenceCode; // 프론트에서 전달받은 텍스트 문장
 
     private int status; // 발음 상태
-    private int feedbackCount; // 피드백 수
-    @Column(name = "word_index")
-    private String wordIndex; // 문제 발생 단어 인덱스 리스트
     @Column(name = "intonation_feedbacks")
     private String intonationFeedbacks; // 발음 피드백 리스트
     @Column(name = "intonation_image_name")
