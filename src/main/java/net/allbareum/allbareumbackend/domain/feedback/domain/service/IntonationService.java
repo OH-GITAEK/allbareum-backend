@@ -58,7 +58,7 @@ public class IntonationService {
                 return originalFileName; // 임시 파일 이름 설정
             }
         });
-        body.add("text", feedbackCreateRequestDto.getTextSentence());
+        body.add("sentence_code", feedbackCreateRequestDto.getTextSentence());
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         System.out.println(requestEntity);
