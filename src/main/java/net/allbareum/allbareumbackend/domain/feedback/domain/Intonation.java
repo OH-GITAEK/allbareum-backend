@@ -29,6 +29,7 @@ public class Intonation {
     private String intonationFeedbacks; // 발음 피드백 리스트
     @Column(name = "intonation_image_name")
     private String feedbackImageUrls; // 피드백 이미지 경로 리스트
+    private String intonationImageUrls; // 정확한 발음 이미지 경로
     private double intonationScore; // 발음 점수
 
     @ManyToOne

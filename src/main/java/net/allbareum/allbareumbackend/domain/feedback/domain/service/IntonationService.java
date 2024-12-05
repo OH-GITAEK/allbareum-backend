@@ -101,14 +101,14 @@ public class IntonationService {
 
         // 이미지 파일 파싱
         MultipartFile intonationFeedbackImage = parser.getFilePart("feedback_image");
-        String intonationFeedbackImageUrl = "https://allbareum.s3.ap-northeast-2.amazonaws.com/images/100point.png";
+        String feedbackImageUrls = "https://allbareum.s3.ap-northeast-2.amazonaws.com/images/100point.png";
         if (intonationFeedbackImage == null) {
             System.out.println("Feedback image is null or not provided");
         } else {
-            intonationFeedbackImageUrl = s3Service.upload(intonationFeedbackImage, "images/intonation");
-            System.out.println("Intonation Feedback Image URL: " + intonationFeedbackImageUrl);
+            feedbackImageUrls = s3Service.upload(intonationFeedbackImage, "images/intonation");
+            System.out.println("Intonation Feedback Image URL: " + feedbackImageUrls);
         }
-//        String intonationFeedbackImageUrl = s3Service.upload(intonationFeedbackImage, "images/intonation");
+        String intonationFeedbackImageUrl = "https://allbareum.s3.ap-northeast-2.amazonaws.com/images/image/" + sentenceCode + ".jpg";
 
         // 디버그 로그
 
@@ -119,7 +119,8 @@ public class IntonationService {
                 .sentenceCode(sentenceCode)
                 .status(status)
                 .intonationFeedbacks(intonationFeedbacks)
-                .feedbackImageUrls(intonationFeedbackImageUrl)
+                .feedbackImageUrls(feedbackImageUrls)
+                .intonationImageUrls(intonationFeedbackImageUrl)
                 .intonationScore(intonationScore)
                 .user(user)
                 .build();

@@ -18,6 +18,7 @@ public class IntonationFeedbackResponseDto {
     private String intonationFeedbacks; // 발음 피드백 리스트
     private String feedbackImageUrls; // 피드백 이미지 이름 리스트
     private double intonationScore; // 발음 점수
+    private String intonationImageUrls; // 정확한 발음 이미지 경로
 
     @Builder
     public IntonationFeedbackResponseDto(Intonation intonation) {
@@ -28,5 +29,6 @@ public class IntonationFeedbackResponseDto {
         this.intonationFeedbacks = intonation.getIntonationFeedbacks(); // 발음 피드백 리스트
         this.feedbackImageUrls = intonation.getFeedbackImageUrls(); // 피드백 이미지 이름 리스트
         this.intonationScore = intonation.getIntonationScore(); // 발음 점수
+        this.intonationImageUrls = intonation.getIntonationImageUrls();
     }
 }
