@@ -31,6 +31,7 @@ public class PronunciationService {
     private String mlServerUrl;
 
     public PronunciationFeedbackResponseDto createPronunciation(User user, FeedbackCreateRequestDto feedbackCreateRequestDto) throws IOException, ExecutionException, InterruptedException {
+        s3Service.upload(feedbackCreateRequestDto.getAudioFile(), "images/audio-pronunciation");
         // 비동기 호출
         CompletableFuture<ResponseEntity<Map>> pronunciationFeedbackFuture =
                 feedbackAsyncService.getFeedback(feedbackCreateRequestDto);

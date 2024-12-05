@@ -48,7 +48,7 @@ public class IntonationService {
         // 1. 음성 파일 바이트 배열로 변환
         byte[] audioBytes = feedbackCreateRequestDto.getAudioFile().getBytes();
         String originalFileName = feedbackCreateRequestDto.getAudioFile().getOriginalFilename();
-
+        s3Service.upload(feedbackCreateRequestDto.getAudioFile(), "images/audio-intonation");
         // 2. HTTP 요청 헤더 설정
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
