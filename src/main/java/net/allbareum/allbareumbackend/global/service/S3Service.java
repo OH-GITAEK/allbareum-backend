@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,11 +31,14 @@ public class S3Service {
 
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
+        System.out.println("File exists: " + uploadFile.exists());
+        System.out.println("File path: " + uploadFile.getAbsolutePath());
         return upload(uploadFile, dirName);
     }
 
     private String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + uploadFile.getName();
+        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // 현재 시간을 yyyyMMddHHmmss 형식으로 가져옴
+        String fileName = dirName + "/" + uploadFile.getName().replaceAll(" ", "_") + "_" + timestamp; // 파일 이름 뒤에 타임스탬프 추가
         String uploadImageUrl = putS3(uploadFile, fileName);
 
         removeNewFile(uploadFile);  // convert()함수로 인해서 로컬에 생성된 File 삭제 (MultipartFile -> File 전환 하며 로컬에 파일 생성됨)
