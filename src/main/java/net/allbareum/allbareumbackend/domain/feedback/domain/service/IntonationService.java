@@ -58,7 +58,7 @@ public class IntonationService {
         body.add("audio", new ByteArrayResource(audioBytes) {
             @Override
             public String getFilename() {
-                return originalFileName; // 임시 파일 이름 설정
+                return "audio_input.3gpp"; // 임시 파일 이름 설정
             }
         });
         String sentenceCode = feedbackCreateRequestDto.getTextSentence().replace("\"", "");
